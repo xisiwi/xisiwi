@@ -1,0 +1,30 @@
+PImage img;
+color b = color(0);
+color w = color(255); 
+color r = color(255,0,0); 
+int allPixels; 
+
+
+void setup() {
+ size(1080,1439);
+ img=loadImage("img.png");
+ allPixels = img.width * img.height; 
+ smooth();
+}  
+void draw() {
+ float mingDu;
+ loadPixels();
+ for (int i = 0;i < allPixels; i++){
+ mingDu = brightness(img.pixels[i]); 
+ if (mingDu > 200) { 
+    pixels[i] = w; 
+}
+ else if (mingDu > 100 && mingDu < 201) { 
+   pixels[i] = r;
+}
+ else {
+   pixels[i] = b; 
+}
+}
+updatePixels(); 
+}
