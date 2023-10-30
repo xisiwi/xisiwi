@@ -1,0 +1,67 @@
+PFont font; 
+ArrayList<Particle> particles; 
+
+void setup() {
+  size(1000, 800);
+  font = createFont("Arial", 200); 
+  particles = new ArrayList<Particle>(); 
+}
+
+void draw() {
+  background(0);
+  
+  
+  textFont(font);
+  textAlign(CENTER, CENTER);
+  textSize(200);
+  fill(255);
+  text("Halloween", width/2, height/2);
+  
+ 
+  for (Particle particle : particles) {
+    particle.update();
+    particle.display();
+  }
+}
+
+void mousePressed() {
+  float x = mouseX;
+  float y = mouseY;
+  
+  loadPixels();
+  PImage textImage = get();
+  textImage.loadPixels();
+  
+  int index = int(y) * width + int(x);
+  int pixelColor = textImage.pixels[index];
+  if (pixelColor == color(255)) {
+    Particle particle = new Particle(x, y);
+    particles.add(particle);
+  }
+}
+
+class Particle {
+  PVector position;
+  PVector velocity;
+  PVector acceleration;
+  float lifespan;
+  
+  Particle(float x, float y) {
+    position = new PVector(x, y);
+    velocity = PVector.random2D().mult(random(1, 3));
+    acceleration = new PVector(0, 0.05);
+    lifespan = 255;
+  }
+  
+  void update() {
+    velocity.add(acceleration);
+    position.add(velocity);
+    lifespan -= 1;
+  }
+  
+  void display() {
+    fill(255, lifespan);
+    noStroke();
+    ellipse(position.x, position.y, 5, 5);
+  }
+}
